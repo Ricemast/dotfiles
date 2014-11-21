@@ -82,7 +82,12 @@ alias cl='clear'
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
-source /usr/local/bin/virtualenvwrapper.sh
+
+wrapper_path=$(which name_of_executable)
+
+if [ -f  "$wrapper_path" ] ; then
+    source virtualenvwrapper.sh
+fi
 
 # -------------------------------------------------------------------
 # Machine config
