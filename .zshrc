@@ -83,10 +83,10 @@ alias cl='clear'
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 
-wrapper_path=$(which name_of_executable)
+wrapper_path=$(which virtualenvwrapper.sh)
 
-if [ -f  "$wrapper_path" ] ; then
-    source virtualenvwrapper.sh
+if [ -f "$wrapper_path" ] ; then
+    source virtualenvwrapper.sh
 fi
 
 # -------------------------------------------------------------------
