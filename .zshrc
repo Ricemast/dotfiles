@@ -89,6 +89,9 @@ if [ -f "$wrapper_path" ] ; then
     source virtualenvwrapper.sh
 fi
 
+# allow group write
+umask 002
+
 # -------------------------------------------------------------------
 # Machine config
 # -------------------------------------------------------------------
