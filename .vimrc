@@ -103,3 +103,8 @@ nnoremap <Leader>m :w <BAR> !lessc % > %:t:r.css<CR><space>
 " Filetype spesific
 "
 autocmd filetype crontab setlocal nobackup nowritebackup
+autocmd Filetype py setlocal ts=4 sts=4 sw=4 et sta ai
+autocmd Filetype cpp setlocal ts=2 sts=2 sw=2
+autocmd Filetype yaml setlocal ts=2 sts=2 sw=2
+autocmd Filetype go setlocal ts=4 sts=4 sw=4 et!
+
