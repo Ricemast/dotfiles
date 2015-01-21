@@ -1,56 +1,80 @@
-set nocompatible               " be iMproved
-filetype on " required!
-filetype off                   " required!
+filetype plugin indent on
 
+" Setting up Vundle - the vim plugin bundler
+
+let iCanHazVundle=1
+let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+if !filereadable(vundle_readme)
+    echo "Installing Vundle.."
+    echo ""
+    silent !mkdir -p ~/.vim/bundle
+    silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+    let iCanHazVundle=0
+endif
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-
-" let Vundle manage Vundle
-" required!
 Bundle 'gmarik/vundle'
 
-" My Bundles here:
+" Text processors
+Bundle 'tell-k/vim-autopep8'
+Bundle 'bronson/vim-trailing-whitespace'
+
+" UI Modules
 Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'rking/ag.vim'
+Bundle 'tpope/vim-dispatch'
+
+" UI Enhancements
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'Lokaltog/powerline'
+
+" Misc Bundles
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/syntastic'
-Bundle 'Lokaltog/powerline'
-Bundle 'kien/ctrlp.vim'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'EasyGrep'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'Rykka/riv.vim'
+
+" Lang: Go
 Bundle 'jnwhiteh/vim-golang'
-Bundle 'bronson/vim-trailing-whitespace'
-Bundle 'klen/python-mode'
-Bundle 'groenewege/vim-less'
+Bundle 'fatih/vim-go'
 
+" Lang: Coffescript
+Bundle 'kchmck/vim-coffee-script'
 
-filetype plugin indent on     " required!
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
-"
+" Lang: HTML
+Bundle 'mattn/emmet-vim'
 
+if iCanHazVundle == 0
+    echo "Installing Bundles, please ignore key map error messages"
+    echo ""
+    :BundleInstall
+endif
 
-set number
+" Setting up Vundle - the vim plugin bundler end
+
 syntax on
 syntax enable
-set backspace=indent,eol,start
-
+set number
+set smarttab
+set expandtab
+set colorcolumn=80
 set background=dark
+let g:solarized_termtrans=1
+let g:solarized_termcolors=16
 colorscheme solarized
+set shiftwidth=4
+set softtabstop=4
+set autoindent
+set tabstop=4
+
+set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 10
+
+set backspace=indent,eol,start
 
 "
 " NERDTree
 "
-
 autocmd vimenter * NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -60,24 +84,9 @@ autocmd BufNew * wincmd l
 
 "
 " Powerline
-"
 
 set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-set guifont=Ubuntu\ Mono\ derivative\ Powerline
-
-"
-" Python Spesific
-"
-
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set textwidth=80
-set smarttab
-set expandtab
-set colorcolumn=80
-
-let g:syntastic_python_checkers=['flake8']
+set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 
 "
 " Ctrl-P
@@ -89,6 +98,19 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
+if executable('ag')
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+"
+" The Silver Searcher (ag)
+"
+nnoremap K :Ag! "\b<cword>\b"<CR>:cw<CR>
+"
 "
 " YCM
 "
@@ -96,15 +118,26 @@ let g:ctrlp_custom_ignore = {
 let g:ycm_autoclose_preview_window_after_completion=1
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+"
+" Syntastic
+"
+
 let g:syntastic_javascript_checkers = ['jshint']
-nnoremap <Leader>m :w <BAR> !lessc % > %:t:r.css<CR><space>
+let g:syntastic_python_checkers=['flake8']
+
+"
+" Powerline
+"
+
+let g:powerline_config_overrides={"common":{"log_file":"/tmp/powerline.log"}}
 
 "
 " Filetype spesific
 "
-autocmd filetype crontab setlocal nobackup nowritebackup
+
 autocmd Filetype py setlocal ts=4 sts=4 sw=4 et sta ai
 autocmd Filetype cpp setlocal ts=2 sts=2 sw=2
 autocmd Filetype yaml setlocal ts=2 sts=2 sw=2
 autocmd Filetype go setlocal ts=4 sts=4 sw=4 et!
 
+autocmd BufNewFile,BufReadPost *.go set filetype=go
