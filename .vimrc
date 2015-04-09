@@ -39,11 +39,19 @@ Bundle 'scrooloose/syntastic'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'fatih/vim-go'
 
+" Lang: Javascript
+Bundle "pangloss/vim-javascript"
+Bundle "othree/yajs.vim"
+
+" Lang: JSX
+Bundle "mxw/vim-jsx"
+
 " Lang: Coffescript
 Bundle 'kchmck/vim-coffee-script'
 
 " Lang: HTML
 Bundle 'mattn/emmet-vim'
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 
 if iCanHazVundle == 0
     echo "Installing Bundles, please ignore key map error messages"
